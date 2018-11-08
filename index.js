@@ -96,10 +96,12 @@ class Game {
       this.onTouch = false
     })
     document.addEventListener('mousemove', e => {
+      e.preventDefault()
       // console.log(e.clientX)
       this.tapLeft = e.clientX
     })
     document.addEventListener('touchmove', e => {
+      e.preventDefault()
       // console.log(e.touches[0].clientX)
       this.tapLeft = e.touches[0].clientX
     })
