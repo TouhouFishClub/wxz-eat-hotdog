@@ -38,8 +38,8 @@ html, body {
 }
 .hp #hpbar {
 	position: relative;
-
 	width: 100%;
 	height: 18px;
 	background: #dd0011;
+	transition: 300ms
 }

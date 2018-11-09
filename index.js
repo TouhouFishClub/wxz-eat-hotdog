@@ -53,9 +53,11 @@ class HotDog {
 
 /* Game Core */
 class Game {
-  constructor(ctx, scoreContainer){
+  constructor(ctx, scoreContainer, hpNum, hpContainer){
     this.ctx = ctx
     this.scoreContainer = scoreContainer
+    this.hpNum = hpNum
+    this.hpContainer = hpContainer
   }
   init() {
     this.wxzs = []
@@ -72,6 +74,7 @@ class Game {
     this.tapLeft = 0
     this.tapTop = 0
     this.score = 0
+    this.hp = 100
 
     this.scoreContainer.innerHTML = this.score
 
@@ -143,6 +146,11 @@ class Game {
       if(wxz.yPos > this.MAX_HEIGHT) {
         this.wxzs.remove(wxz)
         this.cross = this.cross + 1
+        if(this.hp - 20 > 0) {
+          this.hp = this.hp - 20
+        } else {
+          this.hp = 0
+        }
       }
       /* 碰撞检测 */
       for(let i = 0; i < this.hotdogs.length; i ++) {
@@ -156,6 +164,9 @@ class Game {
             this.wxzEats.push(wxz)
             this.score = this.score + 10
             this.scoreContainer.innerHTML = this.score
+            if(this.hp < 100) {
+              this.hp = this.hp + 1
+            }
             this.wxzs.remove(wxz)
             break
           }
@@ -197,6 +208,8 @@ class Game {
     this.hotdogs.forEach(hotdog => {
       this.ctx.drawImage(this.hotDogImg, hotdog.xPos, hotdog.yPos, 27, 47)
     })
+    this.hpNum.innerHTML = this.hp
+    this.hpContainer.style.width = `${this.hp}%`
   }
 }
 
@@ -206,5 +219,7 @@ canvas.width = document.documentElement.clientWidth
 canvas.height = document.documentElement.clientHeight
 
 let score = document.querySelector('#scoreNum')
+let hpnum = document.querySelector('#hpNum')
+let hpbar = document.querySelector('#hpbar')
 
-new Game(ctx, score).init()
+new Game(ctx, score, hpnum, hpbar).init()
