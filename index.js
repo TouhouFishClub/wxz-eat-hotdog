@@ -68,7 +68,7 @@ class Game {
     this.hotdogControl = 0
     this.MAX_HEIGHT = document.documentElement.clientHeight
     this.MAX_WIDTH = document.documentElement.clientWidth
-    this.Level = 2
+    this.Level = 1
     this.cross = 0
     this.onTouch = false
     this.tapLeft = 0
@@ -132,19 +132,21 @@ class Game {
     }, 1000 / this.FPS)
   }
   manage() {
-    /* 每100帧生成一个校长 */
-    if(this.frame % 5 === 0) {
+    this.Level = Math.ceil(this.score / 100) || 1
+
+    /* 每50帧生成一个校长 */
+    if(this.frame % Math.ceil(50 / this.Level) === 0) {
      this.wxzs.push(new Wxz(Math.random() * (this.MAX_WIDTH - 64), 0))
     }
 
     /* 每5帧生成一个热狗 */
-    if(this.hotdogControl % 2 === 0 && this.tapLeft && this.onTouch) {
+    if(this.hotdogControl % Math.ceil(20 / this.Level) === 0 && this.tapLeft && this.onTouch) {
       this.hotdogs.push(new HotDog(this.tapLeft, this.tapTop - 30))
     }
 
     /* 校长下落 */
     this.wxzs.forEach(wxz => {
-      wxz.dropDown(this.Level * 5)
+      wxz.dropDown(this.Level * 2)
       if(wxz.yPos > this.MAX_HEIGHT) {
         this.wxzs.remove(wxz)
         this.cross = this.cross + 1
