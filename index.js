@@ -10,9 +10,10 @@ Array.prototype.remove = function(obj){
 
 /* wxz */
 class Wxz {
-  constructor(x, y) {
+  constructor(x, y, speed) {
     this.x = x
     this.y = y
+    this.speed = speed / 2 + Math.random() * speed
     this.down = 30
   }
   get xPos() {
@@ -28,8 +29,8 @@ class Wxz {
     this.y = this.y - 0.2
     this.down = this.down - 1
   }
-  dropDown(speed) {
-    this.y = this.y += speed
+  dropDown() {
+    this.y = this.y += this.speed
   }
 
 }
@@ -132,11 +133,12 @@ class Game {
     }, 1000 / this.FPS)
   }
   manage() {
-    this.Level = Math.ceil(this.score / 100) || 1
+    /* 升级 */
+    this.Level = Math.ceil(this.score / 1000) || 1
 
     /* 每50帧生成一个校长 */
     if(this.frame % Math.ceil(50 / this.Level) === 0) {
-     this.wxzs.push(new Wxz(Math.random() * (this.MAX_WIDTH - 64), 0))
+     this.wxzs.push(new Wxz(Math.random() * (this.MAX_WIDTH - 64), 0, this.Level * 2))
     }
 
     /* 每5帧生成一个热狗 */
@@ -146,7 +148,7 @@ class Game {
 
     /* 校长下落 */
     this.wxzs.forEach(wxz => {
-      wxz.dropDown(this.Level * 2)
+      wxz.dropDown()
       if(wxz.yPos > this.MAX_HEIGHT) {
         this.wxzs.remove(wxz)
         this.cross = this.cross + 1
