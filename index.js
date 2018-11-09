@@ -62,12 +62,14 @@ class Game {
     this.hotdogs = []
     this.FPS = 60
     this.frame = 0
+    this.hotdogControl = 0
     this.MAX_HEIGHT = document.documentElement.clientHeight
     this.MAX_WIDTH = document.documentElement.clientWidth
     this.Level = 2
     this.cross = 0
     this.onTouch = false
     this.tapLeft = 0
+    this.tapTop = 0
 
     let wxzImg = new Image()
     wxzImg.src = './source/wxz.png'
@@ -82,29 +84,39 @@ class Game {
     this.hotDogImg = hotDogImg
 
     document.addEventListener('mousedown', e => {
+      e.preventDefault()
+      this.hotdogControl = 0
       this.onTouch = true
       this.tapLeft = e.clientX
+      this.tapTop = e.clientY
     })
     document.addEventListener('touchstart', e => {
+      e.preventDefault()
+      this.hotdogControl = 0
       this.onTouch = true
       this.tapLeft = e.touches[0].clientX
-    })
+      this.tapTop = e.touches[0].clientY
+    }, { passive: false })
     document.addEventListener('mouseup', e => {
+      e.preventDefault()
       this.onTouch = false
     })
     document.addEventListener('touchend', e => {
+      e.preventDefault()
       this.onTouch = false
-    })
+    }, { passive: false })
     document.addEventListener('mousemove', e => {
       e.preventDefault()
       // console.log(e.clientX)
       this.tapLeft = e.clientX
+      this.tapTop = e.clientY
     })
     document.addEventListener('touchmove', e => {
       e.preventDefault()
       // console.log(e.touches[0].clientX)
       this.tapLeft = e.touches[0].clientX
-    })
+      this.tapTop = e.touches[0].clientY
+    }, { passive: false })
 
     setInterval(() => {
       this.manage()
@@ -117,8 +129,8 @@ class Game {
     }
 
     /* 每10帧生成一个热狗 */
-    if(this.frame % 10 === 0 && this.tapLeft && this.onTouch) {
-      this.hotdogs.push(new HotDog(this.tapLeft, this.MAX_HEIGHT - 60))
+    if(this.hotdogControl % 10 === 0 && this.tapLeft && this.onTouch) {
+      this.hotdogs.push(new HotDog(this.tapLeft, this.tapTop - 60))
     }
 
     /* 校长下落 */
@@ -163,6 +175,7 @@ class Game {
 
     this.reRender()
     this.frame = this.frame + 1
+    this.hotdogControl = this.hotdogControl + 1
   }
   reRender() {
     this.ctx.clearRect(0, 0, this.MAX_WIDTH, this.MAX_HEIGHT)
