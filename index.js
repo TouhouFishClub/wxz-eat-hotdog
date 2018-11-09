@@ -124,12 +124,12 @@ class Game {
   }
   manage() {
     /* 每100帧生成一个校长 */
-    if(this.frame % 50 === 0) {
+    if(this.frame % 5 === 0) {
      this.wxzs.push(new Wxz(Math.random() * (this.MAX_WIDTH - 64), 0))
     }
 
-    /* 每10帧生成一个热狗 */
-    if(this.hotdogControl % 10 === 0 && this.tapLeft && this.onTouch) {
+    /* 每5帧生成一个热狗 */
+    if(this.hotdogControl % 2 === 0 && this.tapLeft && this.onTouch) {
       this.hotdogs.push(new HotDog(this.tapLeft, this.tapTop - 60))
     }
 

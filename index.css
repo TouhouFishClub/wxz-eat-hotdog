@@ -1,0 +1,45 @@
+* {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	box-sizing: border-box;
+}
+html, body {
+	height: 100%
+}
+#canvas {
+	width: 100%;
+	height: 100%;
+}
+.state-bar {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	width: 100%;
+	height: 36px;
+	background: #000;
+	color: #fff;
+	position: fixed;
+	top: 0;
+	left: 0;
+	padding: 5px 10px;
+}
+.hp {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+.hp .hp-box {
+	border: 1px solid #fff;
+	height: 20px;
+	width: 150px;
+	margin-left: 10px;
+	position: relative;
+}
+.hp #hpbar {
+	position: relative;
+
+	width: 100%;
+	height: 18px;
+	background: #dd0011;
+}
