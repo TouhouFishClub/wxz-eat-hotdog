@@ -53,8 +53,9 @@ class HotDog {
 
 /* Game Core */
 class Game {
-  constructor(ctx){
+  constructor(ctx, scoreContainer){
     this.ctx = ctx
+    this.scoreContainer = scoreContainer
   }
   init() {
     this.wxzs = []
@@ -70,6 +71,9 @@ class Game {
     this.onTouch = false
     this.tapLeft = 0
     this.tapTop = 0
+    this.score = 0
+
+    this.scoreContainer.innerHTML = this.score
 
     let wxzImg = new Image()
     wxzImg.src = './source/wxz.png'
@@ -135,7 +139,7 @@ class Game {
 
     /* 校长下落 */
     this.wxzs.forEach(wxz => {
-      wxz.dropDown(this.Level)
+      wxz.dropDown(this.Level * 5)
       if(wxz.yPos > this.MAX_HEIGHT) {
         this.wxzs.remove(wxz)
         this.cross = this.cross + 1
@@ -150,6 +154,8 @@ class Game {
           } else {
             this.hotdogs.remove(this.hotdogs[i])
             this.wxzEats.push(wxz)
+            this.score = this.score + 10
+            this.scoreContainer.innerHTML = this.score
             this.wxzs.remove(wxz)
             break
           }
@@ -199,4 +205,6 @@ const canvas = document.querySelector('#canvas'),
 canvas.width = document.documentElement.clientWidth
 canvas.height = document.documentElement.clientHeight
 
-new Game(ctx).init()
+let score = document.querySelector('#scoreNum')
+
+new Game(ctx, score).init()
