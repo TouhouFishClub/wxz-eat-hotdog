@@ -134,7 +134,7 @@ class Game {
   }
   manage() {
     /* 升级 */
-    this.Level = Math.ceil(this.score / 1000) || 1
+    this.Level = Math.ceil(Math.sqrt(this.score / 200)) || 1
 
     /* 每50帧生成一个校长 */
     if(this.frame % Math.ceil(50 / this.Level) === 0) {
@@ -142,7 +142,7 @@ class Game {
     }
 
     /* 每5帧生成一个热狗 */
-    if(this.hotdogControl % Math.ceil(20 / this.Level) === 0 && this.tapLeft && this.onTouch) {
+    if(this.hotdogControl % Math.ceil(30 / this.Level) === 0 && this.tapLeft && this.onTouch) {
       this.hotdogs.push(new HotDog(this.tapLeft, this.tapTop - 30))
     }
 
