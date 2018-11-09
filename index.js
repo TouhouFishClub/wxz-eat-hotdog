@@ -53,8 +53,8 @@ class HotDog {
 
 /* Game Core */
 class Game {
-  constructor(ctx, scoreContainer, hpNum, hpContainer){
-    this.ctx = ctx
+  constructor(canvas, scoreContainer, hpNum, hpContainer){
+    this.canvas = canvas
     this.scoreContainer = scoreContainer
     this.hpNum = hpNum
     this.hpContainer = hpContainer
@@ -75,6 +75,8 @@ class Game {
     this.tapTop = 0
     this.score = 0
     this.hp = 100
+    this.interval = 0
+    this.ctx = this.canvas.getContext('2d')
 
     this.scoreContainer.innerHTML = this.score
 
@@ -90,42 +92,42 @@ class Game {
     hotDogImg.src = './source/hotdog.png'
     this.hotDogImg = hotDogImg
 
-    document.addEventListener('mousedown', e => {
+    canvas.addEventListener('mousedown', e => {
       e.preventDefault()
       this.hotdogControl = 0
       this.onTouch = true
       this.tapLeft = e.clientX
       this.tapTop = e.clientY
     })
-    document.addEventListener('touchstart', e => {
+    canvas.addEventListener('touchstart', e => {
       e.preventDefault()
       this.hotdogControl = 0
       this.onTouch = true
       this.tapLeft = e.touches[0].clientX
       this.tapTop = e.touches[0].clientY
     }, { passive: false })
-    document.addEventListener('mouseup', e => {
+    canvas.addEventListener('mouseup', e => {
       e.preventDefault()
       this.onTouch = false
     })
-    document.addEventListener('touchend', e => {
+    canvas.addEventListener('touchend', e => {
       e.preventDefault()
       this.onTouch = false
     }, { passive: false })
-    document.addEventListener('mousemove', e => {
+    canvas.addEventListener('mousemove', e => {
       e.preventDefault()
       // console.log(e.clientX)
       this.tapLeft = e.clientX
       this.tapTop = e.clientY
     })
-    document.addEventListener('touchmove', e => {
+    canvas.addEventListener('touchmove', e => {
       e.preventDefault()
       // console.log(e.touches[0].clientX)
       this.tapLeft = e.touches[0].clientX
       this.tapTop = e.touches[0].clientY
     }, { passive: false })
 
-    setInterval(() => {
+    this.interval = setInterval(() => {
       this.manage()
     }, 1000 / this.FPS)
   }
@@ -137,7 +139,7 @@ class Game {
 
     /* 每5帧生成一个热狗 */
     if(this.hotdogControl % 2 === 0 && this.tapLeft && this.onTouch) {
-      this.hotdogs.push(new HotDog(this.tapLeft, this.tapTop - 60))
+      this.hotdogs.push(new HotDog(this.tapLeft, this.tapTop - 30))
     }
 
     /* 校长下落 */
@@ -195,6 +197,10 @@ class Game {
     this.hotdogControl = this.hotdogControl + 1
   }
   reRender() {
+    if(this.hp == 0){
+      document.querySelector('#panel').style.display = 'block'
+      clearInterval(this.interval)
+    }
     this.ctx.clearRect(0, 0, this.MAX_WIDTH, this.MAX_HEIGHT)
     this.wxzs.forEach(wxz => {
       this.ctx.drawImage(this.wxzImg, wxz.xPos, wxz.yPos, 64, 78)
@@ -213,8 +219,7 @@ class Game {
   }
 }
 
-const canvas = document.querySelector('#canvas'),
-  ctx = canvas.getContext('2d')
+const canvas = document.querySelector('#canvas')
 canvas.width = document.documentElement.clientWidth
 canvas.height = document.documentElement.clientHeight
 
@@ -222,4 +227,13 @@ let score = document.querySelector('#scoreNum')
 let hpnum = document.querySelector('#hpNum')
 let hpbar = document.querySelector('#hpbar')
 
-new Game(ctx, score, hpnum, hpbar).init()
+const game = new Game(canvas, score, hpnum, hpbar)
+const btn = document.querySelector('#start')
+const desc = document.querySelector('#desc')
+btn.addEventListener('click', function(){
+  console.log('===')
+  desc.innerHTML = 'GAME OVER'
+  btn.innerHTML = '重新开始'
+  document.querySelector('#panel').style.display = 'none'
+  game.init()
+})

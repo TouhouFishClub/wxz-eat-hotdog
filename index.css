@@ -43,3 +43,42 @@ html, body {
 	background: #dd0011;
 	transition: 300ms
 }
+.bg {
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	opacity: 0.1;
+	z-index: -1;
+	background: url("source/bg.jpeg");
+}
+#panel {
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	z-index: 10;
+	width: 300px;
+	height: 150px;
+	margin-left: -150px;
+	margin-top: -75px;
+	background: #fff;
+	border-radius: 10px;
+	box-shadow: #d0d0d0 5px 5px 5px;
+	padding: 20px;
+	text-align: center;
+	border: 2px solid #d87d39;
+}
+#panel #desc {
+	font-size: 30px;
+	margin-bottom: 20px;
+}
+#panel #start {
+	font-size: 20px;
+	line-height: 40px;
+	background: #f69d55;
+	border: 2px solid #d87d39;
+	color: #fff;
+	font-weight: bold;
+	border-radius: 5px;
+}
