@@ -221,6 +221,12 @@ class Game {
     this.hpNum.innerHTML = this.hp
     this.hpContainer.style.width = `${this.hp}%`
   }
+  resize() {
+    this.MAX_HEIGHT = document.documentElement.clientHeight
+    this.MAX_WIDTH = document.documentElement.clientWidth
+    this.canvas.width = this.MAX_WIDTH
+    this.canvas.height = this.MAX_HEIGHT
+  }
 }
 
 const canvas = document.querySelector('#canvas')
@@ -241,3 +247,6 @@ btn.addEventListener('click', function(){
   document.querySelector('#panel').style.display = 'none'
   game.init()
 })
+window.onresize = function() {
+  game.resize()
+}
